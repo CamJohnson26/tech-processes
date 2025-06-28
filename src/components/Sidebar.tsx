@@ -109,7 +109,8 @@ export function Sidebar({ onFileSelect, selectedFile }: SidebarProps) {
 
     // Display either search results or directory files
     const displayItems = searchQuery.trim().length >= 2 ? 
-        searchResults.map(result => result.file) : 
+        // Use a Map to deduplicate files by path
+        Array.from(new Map(searchResults.map(result => [result.file.path, result.file])).values()) : 
         files;
 
     return (
@@ -163,8 +164,9 @@ export function Sidebar({ onFileSelect, selectedFile }: SidebarProps) {
                     <nav className="divide-y divide-gray-100">
                         {displayItems.map((file) => {
                             const isSearchResult = searchQuery.trim().length >= 2;
-                            const resultInfo = isSearchResult ? 
-                                searchResults.find(r => r.file.path === file.path) : null;
+                            // Get all results for this file path
+                            const resultsForFile = isSearchResult ? 
+                                searchResults.filter(r => r.file.path === file.path) : [];
                             const isSelected = selectedFile?.path === file.path;
 
                             return (
@@ -182,12 +184,19 @@ export function Sidebar({ onFileSelect, selectedFile }: SidebarProps) {
                                         </h3>
                                     </div>
 
-                                    {resultInfo && (
+                                    {resultsForFile.length > 0 && (
                                         <div className="mt-2 ml-8">
-                                            <p className="text-xs text-gray-500 mb-1.5">Line {resultInfo.line_number}</p>
-                                            <p className="text-xs font-mono text-gray-600 bg-gray-50 p-2 rounded-md border border-gray-200 whitespace-pre-wrap max-h-24 overflow-y-auto shadow-sm">
-                                                {resultInfo.preview}
-                                            </p>
+                                            <p className="text-xs text-gray-500 mb-1.5">{resultsForFile.length} {resultsForFile.length === 1 ? 'match' : 'matches'}</p>
+                                            <div className="space-y-2 max-h-48 overflow-y-auto">
+                                                {resultsForFile.map((result, idx) => (
+                                                    <div key={`${result.file.path}-${result.line_number}-${idx}`} className="bg-gray-50 p-2 rounded-md border border-gray-200 shadow-sm">
+                                                        <p className="text-xs text-gray-500 mb-1">Line {result.line_number}</p>
+                                                        <p className="text-xs font-mono text-gray-600 whitespace-pre-wrap">
+                                                            {result.preview}
+                                                        </p>
+                                                    </div>
+                                                ))}
+                                            </div>
                                         </div>
                                     )}
                                 </div>
