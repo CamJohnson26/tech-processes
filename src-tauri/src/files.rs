@@ -25,24 +25,30 @@ pub fn list_files_in_dir(dir_path: String) -> Result<Vec<FileEntry>, String> {
         return Err("Invalid or non-existent directory path".into());
     }
 
-    let entries = fs::read_dir(&dir)
-        .map_err(|e| format!("Failed to read directory: {}", e))?
-        .filter_map(|entry| {
-            if let Ok(entry) = entry {
-                let path = entry.path();
-                if path.is_file() {
-                    Some(FileEntry {
-                        name: entry.file_name().to_string_lossy().into_owned(),
-                        path: path.to_string_lossy().into_owned(),
-                    })
-                } else {
-                    None
-                }
-            } else {
-                None
+    let mut entries = Vec::new();
+
+    // Process all directory entries
+    for entry_result in fs::read_dir(&dir)
+        .map_err(|e| format!("Failed to read directory: {}", e))? {
+
+        if let Ok(entry) = entry_result {
+            let path = entry.path();
+            let name = entry.file_name().to_string_lossy().into_owned();
+
+            // Only include markdown files
+            if path.is_file() && path.extension().map_or(false, |ext| ext == "md") {
+                entries.push(FileEntry {
+                    name,
+                    path: path.to_string_lossy().into_owned(),
+                });
             }
-        })
-        .collect();
+        }
+    }
+
+    // Sort entries: first by type (directories first), then by name
+    entries.sort_by(|a, b| {
+        a.name.to_lowercase().cmp(&b.name.to_lowercase())
+    });
 
     Ok(entries)
 }

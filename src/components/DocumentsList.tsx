@@ -1,3 +1,6 @@
+// This component is now deprecated and has been replaced by Sidebar and ContentView
+// This file is kept for reference purposes only
+
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
 import { MarkdownContent } from "./MarkdownContent";
