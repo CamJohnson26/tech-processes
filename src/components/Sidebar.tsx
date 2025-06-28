@@ -113,16 +113,16 @@ export function Sidebar({ onFileSelect, selectedFile }: SidebarProps) {
         files;
 
     return (
-        <aside className="w-72 h-screen bg-white border-r border-gray-200 flex flex-col overflow-hidden">
-            <div className="p-4 border-b border-gray-200 bg-gray-50">
-                <h2 className="text-lg font-medium text-gray-800 mb-3">Documents</h2>
+        <aside className="w-72 h-screen bg-white border-r border-gray-200 flex flex-col overflow-hidden shadow-sm">
+            <div className="p-5 border-b border-gray-200 bg-white">
+                <h2 className="text-lg font-medium text-gray-800 mb-4">Documents</h2>
 
                 <div className="relative">
                     <input
                         type="text"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full p-2 pl-8 bg-white border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        className="w-full p-2.5 pl-9 bg-gray-50 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                         placeholder="Search files..."
                     />
                     <svg 
@@ -170,11 +170,11 @@ export function Sidebar({ onFileSelect, selectedFile }: SidebarProps) {
                             return (
                                 <div
                                     key={file.path}
-                                    className={`group px-3 py-2 cursor-pointer transition-colors ${isSelected ? 'bg-blue-50 border-l-4 border-blue-500 pl-2' : 'hover:bg-gray-50 border-l-4 border-transparent'}`}
+                                    className={`group px-4 py-3 cursor-pointer transition-all duration-150 ${isSelected ? 'bg-blue-50 border-l-4 border-blue-500 pl-3' : 'hover:bg-gray-50 border-l-4 border-transparent'}`}
                                     onClick={() => onFileSelect(file)}
                                 >
-                                    <div className="flex items-center space-x-2">
-                                        <svg className="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <div className="flex items-center space-x-3">
+                                        <svg className="h-5 w-5 text-gray-400 group-hover:text-blue-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                         </svg>
                                         <h3 className={`text-sm truncate ${isSelected ? 'font-medium text-blue-600' : 'font-normal text-gray-700 group-hover:text-gray-900'}`}>
@@ -183,9 +183,9 @@ export function Sidebar({ onFileSelect, selectedFile }: SidebarProps) {
                                     </div>
 
                                     {resultInfo && (
-                                        <div className="mt-1 ml-6">
-                                            <p className="text-xs text-gray-500 mb-1">Line {resultInfo.line_number}</p>
-                                            <p className="text-xs font-mono text-gray-600 bg-gray-50 p-1.5 rounded border border-gray-100 whitespace-pre-wrap max-h-20 overflow-y-auto">
+                                        <div className="mt-2 ml-8">
+                                            <p className="text-xs text-gray-500 mb-1.5">Line {resultInfo.line_number}</p>
+                                            <p className="text-xs font-mono text-gray-600 bg-gray-50 p-2 rounded-md border border-gray-200 whitespace-pre-wrap max-h-24 overflow-y-auto shadow-sm">
                                                 {resultInfo.preview}
                                             </p>
                                         </div>

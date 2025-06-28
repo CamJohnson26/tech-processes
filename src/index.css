@@ -1,27 +1,39 @@
+@import "tailwindcss";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html, body {
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  background-color: #f8fafc;
-  color: #0f172a;
+:root {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+html {
+  @apply antialiased;
+  font-family: var(--font-sans);
 }
 
-a:hover {
-  color: #535bf2;
+body {
+  @apply bg-gray-50 text-gray-900 min-h-screen m-0 p-0;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@layer base {
+  a {
+    @apply font-medium text-blue-600 no-underline hover:text-blue-800 hover:underline;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden;
+  }
+
+  .section-title {
+    @apply text-xl font-semibold text-gray-800 mb-4;
+  }
 }
 
 h1 {

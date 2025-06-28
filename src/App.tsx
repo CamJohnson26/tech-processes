@@ -15,7 +15,7 @@ function App() {
         onFileSelect={handleFileSelect}
         selectedFile={selectedFile}
       />
-      <main className="flex-1 overflow-hidden">
+      <main className="flex-1 overflow-hidden relative">
         <ContentView selectedFile={selectedFile} />
       </main>
     </div>
