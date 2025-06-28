@@ -116,7 +116,7 @@ export function Sidebar({ onFileSelect, selectedFile }: SidebarProps) {
     return (
         <aside className="w-72 h-screen bg-white border-r border-gray-200 flex flex-col overflow-hidden shadow-sm">
             <div className="p-5 border-b border-gray-200 bg-white">
-                <h2 className="text-lg font-medium text-gray-800 mb-4">Documents</h2>
+                <h2 className="text-lg font-medium text-gray-800 mb-4">Tech Processes</h2>
 
                 <div className="relative">
                     <input

@@ -65,6 +65,46 @@ module.exports = {
               borderRadius: theme('borderRadius.md'),
               padding: theme('spacing.4'),
             },
+            ul: {
+              listStyleType: 'disc',
+              paddingLeft: theme('spacing.6'),
+            },
+            ol: {
+              listStyleType: 'decimal',
+              paddingLeft: theme('spacing.6'),
+            },
+            li: {
+              marginTop: theme('spacing.2'),
+              marginBottom: theme('spacing.2'),
+              paddingLeft: theme('spacing.1'),
+            },
+            'li::marker': {
+              color: theme('colors.blue.500'),
+              fontWeight: 'bold',
+            },
+            'input[type="checkbox"]': {
+              marginRight: theme('spacing.2'),
+              height: theme('spacing.4'),
+              width: theme('spacing.4'),
+            },
+            'li > p': {
+              marginTop: 0,
+              marginBottom: 0,
+            },
+            'li > input': {
+              marginRight: theme('spacing.2'),
+            },
+            'li > ul, li > ol': {
+              marginTop: theme('spacing.2'),
+              marginBottom: theme('spacing.2'),
+            },
+            'ul > li p': {
+              marginTop: 0,
+              marginBottom: theme('spacing.1'),
+            },
+            'ul > li > ul, ul > li > ol': {
+              marginTop: theme('spacing.2'),
+            },
           },
         },
       }),

@@ -19,9 +19,9 @@ All markdown files in the data directory are automatically listed in the sidebar
 Use the search bar in the sidebar to find content across all markdown files. The search will look through all files in the data directory and any subdirectories.
 
 Search results show:
-- The file name
-- The line number where the match was found
-- A preview of the matching text
+- [ ] The file name
+- [ ] The line number where the match was found
+- [ ] A preview of the matching text
 
 ### Creating New Files
 
