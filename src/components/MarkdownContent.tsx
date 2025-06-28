@@ -6,12 +6,10 @@ interface MarkdownContentProps {
 
 export function MarkdownContent({ content }: MarkdownContentProps) {
   return (
-    <div className="p-4 bg-white rounded-lg shadow-sm">
-      <div className="prose max-w-none">
-        <ReactMarkdown>
-          {content}
-        </ReactMarkdown>
-      </div>
-    </div>
+    <article className="prose lg:prose-lg max-w-none">
+      <ReactMarkdown>
+        {content}
+      </ReactMarkdown>
+    </article>
   );
 }

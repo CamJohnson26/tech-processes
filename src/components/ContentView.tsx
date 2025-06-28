@@ -43,18 +43,20 @@ export function ContentView({ selectedFile }: ContentViewProps) {
 
     if (!selectedFile) {
         return (
-            <div className="h-full flex items-center justify-center text-gray-500">
-                <p>Select a file from the sidebar to view its contents.</p>
+                            <div className="h-screen flex items-center justify-center text-gray-500 bg-white">
+                <div className="text-center p-8">
+                    <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <p className="mt-2 text-sm">Select a file from the sidebar to view its contents.</p>
+                </div>
             </div>
         );
     }
 
     return (
-        <div className="h-full overflow-auto p-6">
-            <div className="max-w-3xl mx-auto">
-                <h1 className="text-2xl font-semibold text-gray-800 mb-6 pb-2 border-b border-gray-200">
-                    {selectedFile.name}
-                </h1>
+        <div className="h-screen overflow-auto bg-white">
+            <div className="max-w-4xl mx-auto px-6 py-8">
 
                 {error && (
                     <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-md">
@@ -63,15 +65,15 @@ export function ContentView({ selectedFile }: ContentViewProps) {
                 )}
 
                 {loading ? (
-                    <div className="flex items-center justify-center p-8">
+                    <div className="flex items-center justify-center p-12">
                         <div className="animate-spin h-8 w-8 border-t-2 border-b-2 border-blue-500 rounded-full"></div>
                     </div>
                 ) : (
                     selectedFile.name.toLowerCase().endsWith('.md') ? (
                         <MarkdownContent content={fileContent} />
                     ) : (
-                        <div className="p-4 bg-gray-50 rounded-lg">
-                            <p>This file is not a markdown file.</p>
+                                                    <div className="p-6 bg-gray-50 rounded-lg border border-gray-200">
+                            <p className="text-gray-700">This file is not a markdown file.</p>
                         </div>
                     )
                 )}

@@ -1,4 +1,3 @@
-import './App.css'
 import { useState } from 'react';
 import { Sidebar, type FileEntry } from "./components/Sidebar";
 import { ContentView } from "./components/ContentView";
@@ -11,14 +10,14 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-row">
-          <Sidebar
-            onFileSelect={handleFileSelect}
-            selectedFile={selectedFile}
-          />
-      <div className="flex-1">
+    <div className="min-h-screen flex overflow-hidden bg-gray-50">
+      <Sidebar
+        onFileSelect={handleFileSelect}
+        selectedFile={selectedFile}
+      />
+      <main className="flex-1 overflow-hidden">
         <ContentView selectedFile={selectedFile} />
-      </div>
+      </main>
     </div>
   );
 }
