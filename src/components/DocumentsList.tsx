@@ -1,5 +1,3 @@
-// src/app/components/DocumentsList.tsx
-
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
 
@@ -36,31 +34,46 @@ export function DocumentsList() {
     }, [path]);
 
     return (
-        <div className="p-4">
-            <h2 className="text-xl font-bold mb-4">Browse Folder</h2>
+        <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-sm">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-6">Browse Folder</h2>
 
-            <label className="block mb-2 font-medium">Directory Path:</label>
-            <input
-                type="text"
-                value={path}
-                onChange={(e) => setPath(e.target.value)}
-                className="w-full p-2 mb-4 border rounded"
-            />
+            <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Directory Path:
+                </label>
+                <input
+                    type="text"
+                    value={path}
+                    onChange={(e) => setPath(e.target.value)}
+                    className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    placeholder="Enter directory path..."
+                />
+            </div>
 
-            {error && <p className="text-red-600">Error: {error}</p>}
+            {error && (
+                <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-md">
+                    <p className="text-red-700">Error: {error}</p>
+                </div>
+            )}
 
             {files.length === 0 ? (
-                <p>No files found.</p>
+                <div className="text-center py-8 text-gray-500">
+                    <p>No files found in this directory.</p>
+                </div>
             ) : (
-                <ul className="list-disc list-inside">
+                <div className="space-y-4">
                     {files.map((file) => (
-                        <li key={file.path}>
-                            <strong>{file.name}</strong>
-                            <br />
-                            <small className="text-gray-500">{file.path}</small>
-                        </li>
+                        <div
+                            key={file.path}
+                            className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                        >
+                            <h3 className="text-lg font-medium text-gray-900">
+                                {file.name}
+                            </h3>
+                            <p className="text-sm text-gray-500 mt-1">{file.path}</p>
+                        </div>
                     ))}
-                </ul>
+                </div>
             )}
         </div>
     );
