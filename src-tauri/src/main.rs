@@ -14,7 +14,8 @@ fn main() {
             files::get_data_directory,
             files::get_home_md_path,
             files::list_files_in_dir,
-            files::read_file_contents
+            files::read_file_contents,
+            files::search_files
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

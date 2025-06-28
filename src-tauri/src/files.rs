@@ -10,6 +10,13 @@ pub struct FileEntry {
     pub path: String,
 }
 
+#[derive(Serialize)]
+pub struct SearchResult {
+    pub file: FileEntry,
+    pub preview: String,
+    pub line_number: usize,
+}
+
 #[tauri::command]
 pub fn list_files_in_dir(dir_path: String) -> Result<Vec<FileEntry>, String> {
     let dir = PathBuf::from(dir_path);
@@ -119,4 +126,106 @@ pub fn read_file_contents(file_path: String) -> Result<String, String> {
         .map_err(|e| format!("Failed to read file contents: {}", e))?;
 
     Ok(contents)
+}
+
+#[tauri::command]
+pub fn search_files(query: String) -> Result<Vec<SearchResult>, String> {
+    // Get the data directory path
+    let data_dir = get_data_directory()?;
+    let data_dir_path = PathBuf::from(&data_dir);
+
+    // Validate query length
+    if query.trim().is_empty() {
+        return Err("Search query cannot be empty".into());
+    }
+
+    if query.trim().len() < 2 {
+        return Err("Search query must be at least 2 characters long".into());
+    }
+
+    let mut results = Vec::new();
+
+    // Recursively search files
+    search_directory(data_dir_path, &query, &mut results)?;
+
+    Ok(results)
+}
+
+fn search_directory(dir: PathBuf, query: &str, results: &mut Vec<SearchResult>) -> Result<(), String> {
+    // Check if the directory exists
+    if !dir.exists() || !dir.is_dir() {
+        return Err(format!("Directory does not exist: {}", dir.display()));
+    }
+
+    // Read all entries in the directory
+    let entries = fs::read_dir(&dir)
+        .map_err(|e| format!("Failed to read directory {}: {}", dir.display(), e))?;
+
+    for entry in entries {
+        let entry = entry.map_err(|e| format!("Failed to read entry: {}", e))?;
+        let path = entry.path();
+
+        if path.is_dir() {
+            // Recursively search subdirectories
+            search_directory(path, query, results)?;
+        } else if path.is_file() {
+            // Only search markdown files
+            if let Some(ext) = path.extension() {
+                if ext == "md" {
+                    search_file(&path, query, results)?;
+                }
+            }
+        }
+    }
+
+    Ok(())
+}
+
+fn search_file(file_path: &PathBuf, query: &str, results: &mut Vec<SearchResult>) -> Result<(), String> {
+    // Open the file
+    let file_content = fs::read_to_string(file_path)
+        .map_err(|e| format!("Failed to read file {}: {}", file_path.display(), e))?;
+
+    // Get the file name
+    let file_name = file_path.file_name()
+        .ok_or_else(|| "Invalid file name".to_string())?
+        .to_string_lossy()
+        .into_owned();
+
+    // Search for the query in each line
+    for (i, line) in file_content.lines().enumerate() {
+        if line.to_lowercase().contains(&query.to_lowercase()) {
+            // Create a preview with some context (trim if too long)
+            let preview = if line.len() > 100 {
+                let start_idx = line.to_lowercase().find(&query.to_lowercase())
+                    .unwrap_or(0)
+                    .saturating_sub(40);
+
+                let end_idx = (start_idx + 100).min(line.len());
+
+                if start_idx > 0 {
+                    format!("...{}", &line[start_idx..end_idx])
+                } else {
+                    format!("{}{}", &line[start_idx..end_idx], if end_idx < line.len() { "..." } else { "" })
+                }
+            } else {
+                line.to_string()
+            };
+
+            // Add to search results
+            results.push(SearchResult {
+                file: FileEntry {
+                    name: file_name.clone(),
+                    path: file_path.to_string_lossy().into_owned(),
+                },
+                preview,
+                line_number: i + 1,  // Line numbers start at 1
+            });
+
+            // Limit to one result per line (to avoid duplicates if the query appears multiple times in a line)
+            // But continue searching other lines
+        }
+    }
+
+    Ok(())
 }
