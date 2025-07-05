@@ -7,6 +7,7 @@
 * Click "Create App"
 * Check the url by clicking the link to the Live App, or check it in HTTPie.
 * Notes: https://docs.digitalocean.com/products/app-platform/getting-started/sample-apps/flask/#deploy-the-app
-* DEPRECATED, but verify not needed:
-  * add the route to the DigitalOcean CORS options, Prefix
-  * Add all allowed Methods to DO CORS options
+* Open the component settings, go to HTTP Request Routes, and click "Configure CORS".
+* add all frontend routes to the DigitalOcean CORS options, exact, and without any trailing slashes (ie http://localhost:3000)
+* Edit Access-Control-Allow-Methods, and check all options
+* Don't forget to click Save, it's hidden

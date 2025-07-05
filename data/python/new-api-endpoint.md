@@ -1,4 +1,5 @@
 # Add an api endpoint to the worker
+* DEPRECATED, by creating new api python project
 * Copy the blueprint file from api/routes/route
 * Rename it
 * Add the blueprint to create_api.py
