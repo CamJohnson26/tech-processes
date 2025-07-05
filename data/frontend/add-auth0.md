@@ -4,6 +4,7 @@
 * In settings, set the callback url and logout url and allowable origins to your site's url in application settings, and also http://localhost:3000. Comma separated, provide the trailing url slash. (`http://localhost:5173/,https://camjohnson26.github.io/task-manager-frontend/`)
 * Set Allowed Logout URLs too
 * Set Allowed Web Origins too
+* Be aware, Auth0 confusingly creates a test application for any new SPA
 * `npm install --save @auth0/auth0-react`
 * Create .env file on frontend to have `VITE_AUTH0_DOMAIN` and `VITE_AUTH0_CLIENT_ID` and `VITE_ORIGIN_URL`. Fill from settings and set the URL to the deployed location, with trailing url if needed (https://camjohnson26.github.io/task-manager-frontend/). Create .env.local and Copy from the settings and set to http://localhost:5173/VITE_ORIGIN_URL=http://localhost:5173/task-manager-frontend/
 * ALSO create .env.production.local to make sure deployed app uses the right env vars
@@ -21,17 +22,29 @@ export const Auth0ProviderWrapped = ({children}: PropsWithChildren) => {
     authorizationParams={{
         redirect_uri: window.location.href
     }}
+    useRefreshTokens={true}
 >
     {children}
     </Auth0Provider>
 }
 ```
-* index.tsx
-```typescript
+* main.tsx
+```typescript jsx
 // To prevent this issue: https://community.auth0.com/t/silent-authorization-not-working-after-login-signup/37114/5 Turn on refresh tokens
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.tsx'
+import {Auth0ProviderWrapped} from "./auth/Auth0Provider.tsx";
 
-<Auth0ProviderWrapped
-    >{children}</Auth0ProviderWrapped>
+createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+        <Auth0ProviderWrapped>
+            <App />
+        </Auth0ProviderWrapped>
+    </StrictMode>,
+)
+
 ```
 * Add login button to the homepage:
 ```typescript

@@ -10,4 +10,5 @@
 * Open the component settings, go to HTTP Request Routes, and click "Configure CORS".
 * add all frontend routes to the DigitalOcean CORS options, exact, and without any trailing slashes (ie http://localhost:3000)
 * Edit Access-Control-Allow-Methods, and check all options
+* Edit Access-Control-Allow-Headers and add `content-type`
 * Don't forget to click Save, it's hidden
