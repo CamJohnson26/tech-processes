@@ -4,7 +4,8 @@
 * Create
 ```shell
 # .gitignore
-*.pyc 
+*.pyc
+.env
 ```
 * Add the api template OR the cli template OR the file processing template
   * API Template:
