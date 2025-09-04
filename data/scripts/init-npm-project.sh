@@ -29,7 +29,7 @@ npm pkg set name="$PKG_NAME"
 npm pkg set version="0.1.0"
 npm pkg set description="$PKG_DESC"
 npm pkg set author="$PKG_AUTHOR"
-npm pkg set license="MIT"
+npm pkg set license="UNLICENSED"
 npm pkg set type="module"
 npm pkg set engines.node=">=18"
 npm pkg set sideEffects="false"
@@ -53,7 +53,7 @@ npm pkg set files='["dist"]'
 
 # If scoped package, default to public publishing
 if [[ "$PKG_NAME" == @*/* ]]; then
-  npm pkg set publishConfig.access="public"
+  npm pkg set publishConfig.access="restricted"
 fi
 
 # ---- Dev dependencies ----
@@ -261,10 +261,10 @@ console.log(greet("World"));
 
 ## License
 
-MIT © ${PKG_AUTHOR}
+All rights reserved © ${PKG_AUTHOR}
 EOF
 
-# LICENSE (MIT)
+# LICENSE RESTRICTED
 CURRENT_YEAR="$(date +%Y)"
 cat > LICENSE <<EOF
 Copyright (c) ${CURRENT_YEAR} ${PKG_AUTHOR}
