@@ -68,10 +68,15 @@ npm install -D \
 # ---- Config files ----
 
 # .npmrc
-cat > .npmrc <<'EOF'
+SCOPE=$(echo "$PKG_NAME" | cut -d'/' -f1) # Extracts @scope from @scope/package_name
+
+cat > .npmrc <<EOF
 save-exact=true
 fund=false
 engine-strict=true
+
+$SCOPE:registry=https://npm.pkg.github.com/
+//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
 EOF
 
 # .gitignore
@@ -258,6 +263,16 @@ console.log(greet("World"));
 - \`npm run format\` — Prettier
 - \`npm run typecheck\` — TypeScript type check
 - \`npm run release\` — version & publish via Changesets
+
+## Build & Publish
+
+* Manually update the version number
+* Make sure you have .npmrc setup with a Github PAT.
+```bash
+@your-scope:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
+```
+* Run `npm publish`
 
 ## License
 
