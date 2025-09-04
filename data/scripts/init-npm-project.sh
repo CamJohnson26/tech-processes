@@ -31,7 +31,7 @@ npm pkg set description="$PKG_DESC"
 npm pkg set author="$PKG_AUTHOR"
 npm pkg set license="UNLICENSED"
 npm pkg set type="module"
-npm pkg set engines.node=">=18"
+npm pkg set engines.node=">=20"
 npm pkg set sideEffects="false"
 
 # Repo info (if provided)
@@ -315,3 +315,4 @@ echo "  1) cd $PKG_DIR"
 echo "  2) npm login            # if not already"
 echo "  3) npm run release      # versions + publish via Changesets"
 echo
+`
