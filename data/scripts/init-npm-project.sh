@@ -16,10 +16,6 @@ REPO_URL="${REPO_URL:-}"            # optional, e.g. https://github.com/user/rep
 PKG_DIR="${PKG_DIR:-$PKG_NAME}"     # folder name, can differ from package name
 NODE_VER="${NODE_VER:-20}"          # write into .nvmrc
 
-echo "Creating package in: $PKG_DIR"
-mkdir -p "$PKG_DIR"
-cd "$PKG_DIR"
-
 # ---- Node version ----
 echo "$NODE_VER" > .nvmrc
 if command -v nvm >/dev/null 2>&1; then
