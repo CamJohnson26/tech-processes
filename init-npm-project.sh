@@ -15,8 +15,14 @@ PKG_AUTHOR="${PKG_AUTHOR:-Your Name <you@example.com>}"
 REPO_URL="${REPO_URL:-}"            # optional, e.g. https://github.com/user/repo
 PKG_DIR="${PKG_DIR:-$PKG_NAME}"     # folder name, can differ from package name
 NODE_VER="${NODE_VER:-20}"          # write into .nvmrc
+INIT_BRANCH="${INIT_BRANCH:-main}"
 
-# ---- Node version ----
+echo "Creating package in: $PKG_DIR"
+mkdir -p "$PKG_DIR"
+cd "$PKG_DIR"
+
+# ---- Git & Node version ----
+git init -b "$INIT_BRANCH"
 echo "$NODE_VER" > .nvmrc
 if command -v nvm >/dev/null 2>&1; then
   nvm install >/dev/null
@@ -29,9 +35,9 @@ npm pkg set name="$PKG_NAME"
 npm pkg set version="0.1.0"
 npm pkg set description="$PKG_DESC"
 npm pkg set author="$PKG_AUTHOR"
-npm pkg set license="UNLICENSED"
+npm pkg set license="MIT"
 npm pkg set type="module"
-npm pkg set engines.node=">=20"
+npm pkg set engines.node=">=18"
 npm pkg set sideEffects="false"
 
 # Repo info (if provided)
@@ -49,12 +55,11 @@ npm pkg set types="dist/index.d.ts"
 npm pkg set exports.'types'="./dist/index.d.ts"
 npm pkg set exports.'import'="./dist/index.js"
 npm pkg set exports.'require'="./dist/index.cjs"
-npm pkg set files='["dist"]' --json
+npm pkg set files='["dist"]'
 
 # If scoped package, default to public publishing
 if [[ "$PKG_NAME" == @*/* ]]; then
-  npm pkg set publishConfig.access="restricted"
-  npm pkg set publishConfig.registry="https://npm.pkg.github.com"
+  npm pkg set publishConfig.access="public"
 fi
 
 # ---- Dev dependencies ----
@@ -69,8 +74,7 @@ npm install -D \
 # ---- Config files ----
 
 # .npmrc
-
-cat > .npmrc <<EOF
+cat > .npmrc <<'EOF'
 save-exact=true
 fund=false
 engine-strict=true
@@ -177,14 +181,7 @@ module.exports = {
     "prettier"
   ],
   settings: {
-    "import/resolver": {
-      node: {
-        extensions: [".js", ".ts"],
-      },
-      typescript: {
-        project: "./tsconfig.json"
-      }
-     }
+    "import/resolver": { typescript: true }
   },
   rules: {
     "import/order": ["warn", { "newlines-between": "always" }]
@@ -268,18 +265,12 @@ console.log(greet("World"));
 - \`npm run typecheck\` — TypeScript type check
 - \`npm run release\` — version & publish via Changesets
 
-## Build & Publish
-
-* Manually update the version number
-* Make sure you've setup npm auth (`npm whoami --registry=https://npm.pkg.github.com` should return your user name)
-* Run `npm publish`
-
 ## License
 
-All rights reserved © ${PKG_AUTHOR}
+MIT © ${PKG_AUTHOR}
 EOF
 
-# LICENSE RESTRICTED
+# LICENSE (MIT)
 CURRENT_YEAR="$(date +%Y)"
 cat > LICENSE <<EOF
 Copyright (c) ${CURRENT_YEAR} ${PKG_AUTHOR}
@@ -315,4 +306,3 @@ echo "  1) cd $PKG_DIR"
 echo "  2) npm login            # if not already"
 echo "  3) npm run release      # versions + publish via Changesets"
 echo
-`

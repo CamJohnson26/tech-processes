@@ -47,7 +47,7 @@ createRoot(document.getElementById('root')!).render(
 
 ```
 * Add login button to the homepage:
-```typescript
+```typescript jsx
 // auth/LoginButton.tsx
 import { useAuth0 } from "@auth0/auth0-react";
 

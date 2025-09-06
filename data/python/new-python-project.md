@@ -60,6 +60,35 @@ from MY_API.create_api import create_api
 app = create_api()
 
 ```
+* CLI Template
+```python
+# cli_app.py
+from cmd import Cmd
+
+from dotenv import load_dotenv
+
+load_dotenv()
+# token = os.environ.get("")
+
+
+class CLIApp(Cmd):
+    """A simple CLI app."""
+    prompt = '>>> '
+
+    def do_greet(self, args):
+        """Greet a person."""
+        first_name, last_name = args.rsplit(" ", 1)
+        print(f"Hello, {last_name}, {first_name}!")
+
+    def do_exit(self, args):
+        """Exit the app."""
+        raise SystemExit()
+
+
+if __name__ == '__main__':
+    CLIApp().cmdloop("Enter a command (greet, exit):")
+
+```
 * Add a Python interpretter (File > Settings > Project Name > Python Interpretters > Add Interpretter > Local)
 * `pip3 install python-dotenv` (Make sure (venv) prefix in terminal)
 * Install any template packages:
@@ -82,6 +111,14 @@ ALLOWED_ORIGINS='http://localhost:3000'
   * API:
     * Test by running `gunicorn --worker-tmp-dir /dev/shm api:app`
     * Open HTTPie and send a request to `http://127.0.0.1:8000` (Should see "Hello World!")
+  * CLI:
+    * Test by running and typing `greet Cameron Johnson`
 * Update the Readme with description (Goal) and usage instructions and technical details
+```txt
+# Project
+## Description
+## Usage
+## Technical
+```
 * Check in the code
 * If API, Go through `deploy-python-api.md`
