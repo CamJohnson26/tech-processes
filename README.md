@@ -1,5 +1,8 @@
 # tech-processes
 
+## Next Steps
+- [ ] Document deploying a python job
+
 ## Goal
 A desktop app to display markdown files with instructions for running a process.
 
